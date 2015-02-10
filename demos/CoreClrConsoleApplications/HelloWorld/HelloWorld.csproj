@@ -47,11 +47,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterResolveReferences">
+  <Target Name="AfterResolveReferences" AfterTargets="ResolveAssemblyReferences">
     <ResolvePackages PackagesDirectory="$(ProjectRoot)\packages" PackagesConfig="$(ProjectRoot)\packages.config">
       <Output TaskParameter="References" ItemName="ReferencePath" />
       <Output TaskParameter="Dependencies" ItemName="Dependencies" />
     </ResolvePackages>
+  </Target>
+  <Target
+      Name="ResolveAssemblyReferencesDesignTime"
+      Returns="@(ReferencePath)"
+      DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
   </Target>
   <Target Name="AfterBuild">
     <Move SourceFiles="$(ProgramExe)" DestinationFiles="$(ProgramDll)" />
